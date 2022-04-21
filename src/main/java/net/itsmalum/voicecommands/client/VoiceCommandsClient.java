@@ -5,11 +5,14 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.effect.StatusEffect;
 
+import net.minecraft.network.MessageType;
 import net.minecraft.potion.Potion;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.lwjgl.glfw.GLFW;
@@ -25,6 +28,17 @@ public class VoiceCommandsClient implements ClientModInitializer {
     Identifier Blindness_Packet = Registry.STATUS_EFFECT.getId(StatusEffect.byRawId(15));
     Identifier Hunger_Packet = Registry.STATUS_EFFECT.getId(StatusEffect.byRawId(17));
     Identifier Speed_Packet = Registry.STATUS_EFFECT.getId(StatusEffect.byRawId(1));
+    Identifier Spawn_Zombie_Packet = Identifier.tryParse("zombie");
+    Identifier Spawn_Creeper_Packet = Identifier.tryParse("creeper");
+    Identifier Spawn_Skeleton_Packet = Identifier.tryParse("skeleton");
+    Identifier Spawn_Spider_Packet = Identifier.tryParse("spider");
+    Identifier Spawn_Ghast_Packet = Identifier.tryParse("ghast");
+    Identifier Spawn_Dragon_Packet = Identifier.tryParse("dragon");
+    Identifier Spawn_Blaze_Packet = Identifier.tryParse("blaze");
+    Identifier Spawn_Wither_Packet = Identifier.tryParse("wither");
+    Identifier Spawn_Silverfish_Packet = Identifier.tryParse("silver");
+    Identifier Spawn_Pillager_Packet = Identifier.tryParse("pillager");
+
 
     @Override
     public void onInitializeClient() {
@@ -36,6 +50,12 @@ public class VoiceCommandsClient implements ClientModInitializer {
         KeyBinding blindnessKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("blindnessKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_O, "Voice Commands Mod"));
         KeyBinding hungerKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("hungerKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_K, "Voice Commands Mod"));
         KeyBinding speedKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("speedKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_M, "Voice Commands Mod"));
+        KeyBinding spawnZombiesKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnZombiesKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, "Voice Commands Mod"));
+        KeyBinding spawnCreeperKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnCreeperKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_J, "Voice Commands Mod"));
+        KeyBinding spawnSkeletonKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnSkeletonKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_N, "Voice Commands Mod"));
+        KeyBinding spawnSpiderKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnSpiderKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, "Voice Commands Mod"));
+        KeyBinding spawnGhastKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnGhastKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_H, "Voice Commands Mod"));
+        KeyBinding spawnDragonKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnDragonKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, "Voice Commands Mod"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(poisonKB.wasPressed()){
@@ -72,7 +92,30 @@ public class VoiceCommandsClient implements ClientModInitializer {
                 ClientPlayNetworking.send(Speed_Packet, PacketByteBufs.empty());
             }
 
+            else if(spawnZombiesKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Zombie_Packet, PacketByteBufs.empty());
+            }
 
+            else if(spawnZombiesKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Zombie_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnCreeperKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Creeper_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnSkeletonKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Skeleton_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnSpiderKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Spider_Packet, PacketByteBufs.empty());
+            }
         });
     }
 }

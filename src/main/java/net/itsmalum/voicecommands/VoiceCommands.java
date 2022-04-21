@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.itsmalum.voicecommands.server.VoiceCommandsServer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -13,6 +14,9 @@ import net.minecraft.network.MessageType;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.command.SummonCommand;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -33,6 +37,10 @@ public class VoiceCommands implements ModInitializer {
 	Identifier Blindness_Packet = Registry.STATUS_EFFECT.getId(StatusEffect.byRawId(15));
 	Identifier Hunger_Packet = Registry.STATUS_EFFECT.getId(StatusEffect.byRawId(17));
 	Identifier Speed_Packet = Registry.STATUS_EFFECT.getId(StatusEffect.byRawId(1));
+	Identifier Spawn_Zombie_Packet = Identifier.tryParse("zombie");
+	Identifier Spawn_Creeper_Packet = Identifier.tryParse("creeper");
+	Identifier Spawn_Skeleton_Packet = Identifier.tryParse("skeleton");
+	Identifier Spawn_Spider_Packet = Identifier.tryParse("spider");
 
 	//Register Packets
 	@Override
@@ -44,6 +52,10 @@ public class VoiceCommands implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(Blindness_Packet, VoiceCommands::handleBlindness);
 		ServerPlayNetworking.registerGlobalReceiver(Hunger_Packet, VoiceCommands::handleHunger);
 		ServerPlayNetworking.registerGlobalReceiver(Speed_Packet, VoiceCommands::handleSpeed);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Zombie_Packet, VoiceCommands::handleZombie);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Creeper_Packet, VoiceCommands::handleCreeper);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Skeleton_Packet, VoiceCommands::handleSkeleton);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Spider_Packet, VoiceCommands::handleSpider);
 	}
 
 	//handle status effect functions
@@ -86,6 +98,62 @@ public class VoiceCommands implements ModInitializer {
 	public static void handleSpeed(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
 			player.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 200, 3), null);
+		});
+	}
+
+	public static void handleZombie(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 9;
+			int i = 0;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 0; i < max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon zombie " + x_cord + " " + y_cord + " " + z_cord);
+			}
+		});
+	}
+
+	public static void handleCreeper(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 9;
+			int i = 0;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 0; i < max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon creeper " + x_cord + " " + y_cord + " " + z_cord);
+			}
+		});
+	}
+
+	public static void handleSkeleton(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 9;
+			int i = 0;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 0; i < max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon skeleton " + x_cord + " " + y_cord + " " + z_cord);
+			}
+		});
+	}
+
+	public static void handleSpider(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 9;
+			int i = 0;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 0; i < max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon spider " + x_cord + " " + y_cord + " " + z_cord);
+			}
 		});
 	}
 }
