@@ -29,6 +29,26 @@ public class VoiceCommands implements ModInitializer {
 	public static final String MOD_ID="voicecommands";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+	//Initializing number of times an effect is used / mob is spawned
+	static int numPoison = 0;
+	static int numLeaping = 0;
+	static int numSlowness = 0;
+	static int numNausea = 0;
+	static int numBlindness = 0;
+	static int numHunger = 0;
+	static int numSpeed = 0;
+	static int numZombie = 0;
+	static int numCreeper = 0;
+	static int numSkeleton = 0;
+	static int numSpider = 0;
+	static  int numGhast = 0;
+	static int numDragon = 0;
+	static int numBlaze = 0;
+	static int numWither = 0;
+	static int numSilver = 0;
+	static int numPillager = 0;
+
+
 	// Initialize Status Packets
 	Identifier Poison_Packet = Registry.POTION.getId(Potion.byId("poison"));
 	Identifier Leaping_Packet = Registry.POTION.getId(Potion.byId("leaping"));
@@ -41,10 +61,35 @@ public class VoiceCommands implements ModInitializer {
 	Identifier Spawn_Creeper_Packet = Identifier.tryParse("creeper");
 	Identifier Spawn_Skeleton_Packet = Identifier.tryParse("skeleton");
 	Identifier Spawn_Spider_Packet = Identifier.tryParse("spider");
+	Identifier Spawn_Ghast_Packet = Identifier.tryParse("ghast");
+	Identifier Spawn_Dragon_Packet = Identifier.tryParse("dragon");
+	Identifier Spawn_Blaze_Packet = Identifier.tryParse("blaze");
+	Identifier Spawn_Wither_Packet = Identifier.tryParse("wither");
+	Identifier Spawn_Silverfish_Packet = Identifier.tryParse("silver");
+	Identifier Spawn_Pillager_Packet = Identifier.tryParse("pillager");
 
 	//Register Packets
 	@Override
 	public void onInitialize() {
+	 	// set variables to 0 on initialize
+		numPoison = -1;
+	 	numLeaping = -1;
+		numSlowness = -1;
+		numNausea = -1;
+		numBlindness = -1;
+		numHunger = -1;
+		numSpeed = -1;
+		numZombie = 1;
+		numCreeper = 1;
+		numSkeleton = 1;
+		numSpider = 1;
+		numGhast = 1;
+		numDragon = 1;
+		numWither = 1;
+		numSilver = 1;
+		numPillager = 1;
+
+		//Initialize Packets to handle functions
 		ServerPlayNetworking.registerGlobalReceiver(Poison_Packet, VoiceCommands::handlePoison);
 		ServerPlayNetworking.registerGlobalReceiver(Leaping_Packet, VoiceCommands::handleLeaping);
 		ServerPlayNetworking.registerGlobalReceiver(Slowness_Packet, VoiceCommands::handleSlowness);
@@ -56,104 +101,239 @@ public class VoiceCommands implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(Spawn_Creeper_Packet, VoiceCommands::handleCreeper);
 		ServerPlayNetworking.registerGlobalReceiver(Spawn_Skeleton_Packet, VoiceCommands::handleSkeleton);
 		ServerPlayNetworking.registerGlobalReceiver(Spawn_Spider_Packet, VoiceCommands::handleSpider);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Ghast_Packet, VoiceCommands::handleGhast);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Dragon_Packet, VoiceCommands::handleDragon);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Blaze_Packet, VoiceCommands::handleBlaze);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Wither_Packet, VoiceCommands::handleWither);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Silverfish_Packet, VoiceCommands::handleSilver);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Pillager_Packet, VoiceCommands::handlePillager);
 	}
 
 	//handle status effect functions
 	public static void handlePoison(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			player.setStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 0), null);
+			player.setStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, numPoison), null);
 		});
+		numPoison += 1;
 	}
 
 	public static void handleLeaping(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			player.setStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 200, 4), null);
+			player.setStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 200, numLeaping), null);
 		});
+		numLeaping += 1;
 	}
 
 	public static void handleSlowness(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			player.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 0), null);
+			player.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, numSlowness), null);
 		});
+		numSlowness += 1;
 	}
 
 	public static void handleNausea(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			player.setStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, 0), null);
+			player.setStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 200, numNausea), null);
 		});
+		numNausea += 1;
 	}
 
 	public static void handleBlindness(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			player.setStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200, 0), null);
+			player.setStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200, numBlindness), null);
 		});
+		numBlindness += 1;
 	}
 
 	public static void handleHunger(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			player.setStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 200, 0), null);
+			player.setStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 200, numHunger), null);
 		});
+		numHunger += 1;
 	}
 
 	public static void handleSpeed(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			player.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 200, 3), null);
+			player.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 200, numSpeed), null);
 		});
+		numSpeed += 1;
 	}
 
 	public static void handleZombie(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			int max = 9;
-			int i = 0;
+			int max = 5 * numZombie;
+			int i;
 			double x_cord = player.getPos().x;
 			double y_cord = player.getPos().y;
 			double z_cord = player.getPos().z;
 			CommandManager commandManager = player.getServer().getCommandManager();
-			for(i = 0; i < max; i++){
+			for(i = 1; i <= max; i++){
+				x_cord = player.getPos().x;
+				y_cord = player.getPos().y;
+				z_cord = player.getPos().z;
+
+				if(i % 4 == 0)
+				{
+					x_cord += 5;
+				}
+
+				else if(i % 3 == 0)
+				{
+					z_cord += 5;
+				}
+
+				else if(i % 2 == 0)
+				{
+					x_cord -= 5;
+				}
+
+				else
+				{
+					z_cord -= 5;
+				}
 				commandManager.execute(server.getCommandSource().withEntity(player), "summon zombie " + x_cord + " " + y_cord + " " + z_cord);
 			}
+			numZombie += 1;
 		});
 	}
 
 	public static void handleCreeper(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			int max = 9;
-			int i = 0;
+			int max = 5 * numCreeper;
+			int i;
 			double x_cord = player.getPos().x;
 			double y_cord = player.getPos().y;
 			double z_cord = player.getPos().z;
 			CommandManager commandManager = player.getServer().getCommandManager();
-			for(i = 0; i < max; i++){
+			for(i = 1; i <= max; i++){
 				commandManager.execute(server.getCommandSource().withEntity(player), "summon creeper " + x_cord + " " + y_cord + " " + z_cord);
 			}
+			numCreeper += 1;
 		});
 	}
 
 	public static void handleSkeleton(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			int max = 9;
-			int i = 0;
+			int max = 5 * numSkeleton;
+			int i;
 			double x_cord = player.getPos().x;
 			double y_cord = player.getPos().y;
 			double z_cord = player.getPos().z;
 			CommandManager commandManager = player.getServer().getCommandManager();
-			for(i = 0; i < max; i++){
+			for(i = 1; i <= max; i++){
 				commandManager.execute(server.getCommandSource().withEntity(player), "summon skeleton " + x_cord + " " + y_cord + " " + z_cord);
 			}
+			numSkeleton += 1;
 		});
 	}
 
 	public static void handleSpider(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			int max = 9;
-			int i = 0;
+			int max = 5 * numSpider;
+			int i;
 			double x_cord = player.getPos().x;
 			double y_cord = player.getPos().y;
 			double z_cord = player.getPos().z;
 			CommandManager commandManager = player.getServer().getCommandManager();
-			for(i = 0; i < max; i++){
+			for(i = 1; i <= max; i++){
 				commandManager.execute(server.getCommandSource().withEntity(player), "summon spider " + x_cord + " " + y_cord + " " + z_cord);
 			}
+			numSpider += 1;
+		});
+	}
+
+	public static void handleGhast(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 2 * numGhast;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon ghast " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numGhast += 1;
+		});
+	}
+
+	public static void handleDragon(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 1 + numDragon -1;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon ender_dragon " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numDragon += 1;
+		});
+	}
+
+	public static void handleBlaze(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 3 * numBlaze;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon blaze " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numBlaze += 1;
+		});
+	}
+
+	public static void handleWither(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 1 * numWither - 1;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon wither " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numWither += 1;
+		});
+	}
+
+	public static void handleSilver(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 5 * numSilver;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon silverfish " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numWither += 1;
+		});
+	}
+
+	public static void handlePillager(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 4 * numPillager;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			String vindicator = "vindicator";
+			String evoker = "evoker";
+			String pillager = "pillager";
+			String illusioner = "illusioner";
+
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon silverfish " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numPillager += 1;
 		});
 	}
 }

@@ -20,7 +20,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class VoiceCommandsClient implements ClientModInitializer {
 
-    //Initialize Packets for effects
+    //Initialize Packets for effects and mobs
     Identifier Poison_Packet = Registry.POTION.getId(Potion.byId("poison"));
     Identifier Leaping_Packet = Registry.POTION.getId(Potion.byId("leaping"));
     Identifier Slowness_Packet = Registry.POTION.getId(Potion.byId("slowness"));
@@ -40,6 +40,7 @@ public class VoiceCommandsClient implements ClientModInitializer {
     Identifier Spawn_Pillager_Packet = Identifier.tryParse("pillager");
 
 
+
     @Override
     public void onInitializeClient() {
         //Set custom keybinds for status effects
@@ -56,6 +57,11 @@ public class VoiceCommandsClient implements ClientModInitializer {
         KeyBinding spawnSpiderKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnSpiderKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, "Voice Commands Mod"));
         KeyBinding spawnGhastKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnGhastKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_H, "Voice Commands Mod"));
         KeyBinding spawnDragonKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnDragonKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, "Voice Commands Mod"));
+        KeyBinding spawnBlazeKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnBlazeKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F11, "Voice Commands Mod"));
+        KeyBinding spawnWitherKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnWitherKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F12, "Voice Commands Mod"));
+        KeyBinding spawnSilverKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnSilverfishKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F13, "Voice Commands Mod"));
+        KeyBinding spawnPillagerKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnPillagerKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F14, "Voice Commands Mod"));
+
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(poisonKB.wasPressed()){
@@ -116,6 +122,36 @@ public class VoiceCommandsClient implements ClientModInitializer {
             {
                 ClientPlayNetworking.send(Spawn_Spider_Packet, PacketByteBufs.empty());
             }
+
+            else if(spawnGhastKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Ghast_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnDragonKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Dragon_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnBlazeKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Blaze_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnWitherKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Wither_Packet, PacketByteBufs.empty());
+            }
+            else if(spawnSilverKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Silverfish_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnPillagerKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Pillager_Packet, PacketByteBufs.empty());
+            }
+
         });
     }
 }
