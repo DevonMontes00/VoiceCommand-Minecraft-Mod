@@ -5,17 +5,15 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.effect.StatusEffect;
-
-import net.minecraft.network.MessageType;
 import net.minecraft.potion.Potion;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.lwjgl.glfw.GLFW;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class VoiceCommandsClient implements ClientModInitializer {
@@ -38,11 +36,18 @@ public class VoiceCommandsClient implements ClientModInitializer {
     Identifier Spawn_Wither_Packet = Identifier.tryParse("wither");
     Identifier Spawn_Silverfish_Packet = Identifier.tryParse("silver");
     Identifier Spawn_Pillager_Packet = Identifier.tryParse("pillager");
-
+    Identifier Spawn_Ravager_Packet = Identifier.tryParse("ravager");
+    Identifier Spawn_Vex_Packet = Identifier.tryParse("vex");
+    Identifier Spawn_Brute_Packet = Identifier.tryParse("brute");
+    Identifier Spawn_Piglin_Packet = Identifier.tryParse("piglin");
+    Identifier Spawn_Giant_Packet = Identifier.tryParse("giant");
+    int numInvert;
 
 
     @Override
     public void onInitializeClient() {
+        numInvert = 1;
+
         //Set custom keybinds for status effects
         KeyBinding poisonKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("poisonKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_P, "Voice Commands Mod"));
         KeyBinding leapingKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("leapingKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_PERIOD, "Voice Commands Mod"));
@@ -57,10 +62,18 @@ public class VoiceCommandsClient implements ClientModInitializer {
         KeyBinding spawnSpiderKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnSpiderKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, "Voice Commands Mod"));
         KeyBinding spawnGhastKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnGhastKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_H, "Voice Commands Mod"));
         KeyBinding spawnDragonKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnDragonKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_B, "Voice Commands Mod"));
-        KeyBinding spawnBlazeKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnBlazeKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F11, "Voice Commands Mod"));
+        KeyBinding spawnBlazeKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnBlazeKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F15, "Voice Commands Mod"));
         KeyBinding spawnWitherKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnWitherKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F12, "Voice Commands Mod"));
         KeyBinding spawnSilverKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnSilverfishKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F13, "Voice Commands Mod"));
         KeyBinding spawnPillagerKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnPillagerKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F14, "Voice Commands Mod"));
+        KeyBinding spawnRavagerKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnRavagerKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F16, "Voice Commands Mod"));
+        KeyBinding spawnVexKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnVexKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F17, "Voice Commands Mod"));
+        KeyBinding spawnBruteKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnBruteKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F18, "Voice Commands Mod"));
+        KeyBinding spawnPiglinKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnPiglinKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F19, "Voice Commands Mod"));
+        KeyBinding spawnGiantKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("spawnGiantKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F20, "Voice Commands Mod"));
+        KeyBinding invertedMouseKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("invertMouseKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F21, "Voice Commands Mod"));
+        KeyBinding mouseSensKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("mouseSensKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F22, "Voice Commands Mod"));
+        KeyBinding fovKB = KeyBindingHelper.registerKeyBinding(new KeyBinding("fovKB", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F23, "Voice Commands Mod"));
 
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -152,6 +165,46 @@ public class VoiceCommandsClient implements ClientModInitializer {
                 ClientPlayNetworking.send(Spawn_Pillager_Packet, PacketByteBufs.empty());
             }
 
+            else if(spawnRavagerKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Ravager_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnVexKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Vex_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnBruteKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Brute_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnPiglinKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Piglin_Packet, PacketByteBufs.empty());
+            }
+
+            else if(spawnGiantKB.wasPressed())
+            {
+                ClientPlayNetworking.send(Spawn_Giant_Packet, PacketByteBufs.empty());
+            }
+
+            else if(invertedMouseKB.wasPressed())
+            {
+                client.options.invertYMouse = true;
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        client.options.invertYMouse = false;
+                        numInvert += 1;
+                    }
+                },numInvert*60*1000);
+
+            }
         });
+
+
     }
 }

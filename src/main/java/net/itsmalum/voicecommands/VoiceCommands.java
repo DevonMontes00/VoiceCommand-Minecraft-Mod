@@ -47,6 +47,11 @@ public class VoiceCommands implements ModInitializer {
 	static int numWither = 0;
 	static int numSilver = 0;
 	static int numPillager = 0;
+	static int numRavager = 0;
+	static int numVex = 0;
+	static int numBrute = 0;
+	static int numPiglin = 0;
+	static int numGiant = 0;
 
 
 	// Initialize Status Packets
@@ -67,6 +72,11 @@ public class VoiceCommands implements ModInitializer {
 	Identifier Spawn_Wither_Packet = Identifier.tryParse("wither");
 	Identifier Spawn_Silverfish_Packet = Identifier.tryParse("silver");
 	Identifier Spawn_Pillager_Packet = Identifier.tryParse("pillager");
+	Identifier Spawn_Ravager_Packet = Identifier.tryParse("ravager");
+	Identifier Spawn_Vex_Packet = Identifier.tryParse("vex");
+	Identifier Spawn_Brute_Packet = Identifier.tryParse("brute");
+	Identifier Spawn_Piglin_Packet = Identifier.tryParse("piglin");
+	Identifier Spawn_Giant_Packet = Identifier.tryParse("giant");
 
 	//Register Packets
 	@Override
@@ -86,8 +96,14 @@ public class VoiceCommands implements ModInitializer {
 		numGhast = 1;
 		numDragon = 1;
 		numWither = 1;
+		numBlaze = 1;
 		numSilver = 1;
 		numPillager = 1;
+		numRavager = 1;
+		numVex = 1;
+		numBrute = 1;
+		numPiglin = 1;
+		numGiant = 1;
 
 		//Initialize Packets to handle functions
 		ServerPlayNetworking.registerGlobalReceiver(Poison_Packet, VoiceCommands::handlePoison);
@@ -107,6 +123,11 @@ public class VoiceCommands implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(Spawn_Wither_Packet, VoiceCommands::handleWither);
 		ServerPlayNetworking.registerGlobalReceiver(Spawn_Silverfish_Packet, VoiceCommands::handleSilver);
 		ServerPlayNetworking.registerGlobalReceiver(Spawn_Pillager_Packet, VoiceCommands::handlePillager);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Ravager_Packet, VoiceCommands::handleRavager);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Vex_Packet, VoiceCommands::handleVex);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Brute_Packet, VoiceCommands::handleBrute);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Piglin_Packet, VoiceCommands::handlePiglin);
+		ServerPlayNetworking.registerGlobalReceiver(Spawn_Giant_Packet, VoiceCommands::handleGiant);
 	}
 
 	//handle status effect functions
@@ -289,7 +310,7 @@ public class VoiceCommands implements ModInitializer {
 
 	public static void handleWither(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
 		server.execute(() -> {
-			int max = 1 * numWither - 1;
+			int max = 1 + numWither - 1;
 			int i;
 			double x_cord = player.getPos().x;
 			double y_cord = player.getPos().y;
@@ -331,9 +352,84 @@ public class VoiceCommands implements ModInitializer {
 
 			CommandManager commandManager = player.getServer().getCommandManager();
 			for(i = 1; i <= max; i++){
-				commandManager.execute(server.getCommandSource().withEntity(player), "summon silverfish " + x_cord + " " + y_cord + " " + z_cord);
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon pillager " + x_cord + " " + y_cord + " " + z_cord);
 			}
 			numPillager += 1;
+		});
+	}
+
+	public static void handleRavager(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 1 + numRavager - 1;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon ravager " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numRavager += 1;
+		});
+	}
+
+	public static void handleVex(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 4 * numVex;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon vex " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numVex += 1;
+		});
+	}
+
+	public static void handleBrute(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 2 * numBrute;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon piglin_brute " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numBrute += 1;
+		});
+	}
+
+	public static void handlePiglin(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 5 * numPiglin;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon piglin " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numPiglin += 1;
+		});
+	}
+
+	public static void handleGiant(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler network, PacketByteBuf buf, PacketSender sender) {
+		server.execute(() -> {
+			int max = 1 + numGiant - 1;
+			int i;
+			double x_cord = player.getPos().x;
+			double y_cord = player.getPos().y;
+			double z_cord = player.getPos().z;
+			CommandManager commandManager = player.getServer().getCommandManager();
+			for(i = 1; i <= max; i++){
+				commandManager.execute(server.getCommandSource().withEntity(player), "summon giant " + x_cord + " " + y_cord + " " + z_cord);
+			}
+			numGiant += 1;
 		});
 	}
 }
